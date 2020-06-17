@@ -1,15 +1,8 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
-  # GET /articles
-  # GET /articles.json
   def index
-    if params[:category_id]
-      @selected_category = Category.find(params[:category_id])
-      @articles = Article.from_category(params[:category_id]).page(params[:page])
-    else
-      @articles = Article.all.page(params[:page])
-    end
+    @articles = params[:category_id].present? ? Category.find(params[:category_id]).articles.page : Article.page(params[:page])
   end
 
   # GET /articles/1
@@ -21,19 +14,20 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
-    # @article.article_categories.build
+    @article.article_categories.build
   end
 
   def create
     # @article = current_user.articles.build(article_params)
     @article = Article.new(article_params)
     category_list = params[:category_list].split(",")
-    if @article.save
-      @article.save_categories(category_list)
-      flash[:success] = "記事を作成しました"
-      redirect_to articles_url
-    else
-      render 'articles/new'
+      if @article.save
+        format.html { redirect_to @article, notice: 'Article was successfully created.' }
+        format.json { render :show, status: :created, location: @article }
+      else
+        format.html { render :new }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -45,13 +39,13 @@ class ArticlesController < ApplicationController
   def update
     @article = Article.find(params[:id])
     category_list = params[:category_list].split(",")
-    if @article.update_attributes(article_params)
-      @article.save_categories(category_list)
-      flash[:success] = "記事を更新しました"
-      redirect_to articles_url
-    else
-      render 'edit'
-    end
+      if @article.update(article_params)
+        format.html { redirect_to @article, notice: 'Article was successfully updated.' }
+        format.json { render :show, status: :ok, location: @article }
+      else
+        format.html { render :edit }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
   end
 
   # DELETE /articles/1
