@@ -10,11 +10,13 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
+    @article = Article.find(params[:id])
   end
 
   # GET /articles/new
   def new
     @article = Article.new
+    @article.article_categories.build
   end
 
   # GET /articles/1/edit
@@ -69,6 +71,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content)
+      params.require(:article).permit(:title, :content, category_ids: [])
     end
 end
