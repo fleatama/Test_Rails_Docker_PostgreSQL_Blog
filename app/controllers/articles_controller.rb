@@ -14,21 +14,25 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
-    @article.article_categories.build
+    # @article.article_categories.build
   end
 
   def create
     # @article = current_user.articles.build(article_params)
     @article = Article.new(article_params)
     category_list = params[:category_list].split(",")
+      # if @article.save
+      #   format.html { redirect_to @article, notice: 'Article was successfully created.' }
+      #   format.json { render :show, status: :created, location: @article }
+      # else
+      #   format.html { render :new }
+      #   format.json { render json: @article.errors, status: :unprocessable_entity }
+      # end
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
-        format.json { render :show, status: :created, location: @article }
+        redirect_to @article
       else
-        format.html { render :new }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        render 'new'
       end
-    end
   end
 
   def edit
