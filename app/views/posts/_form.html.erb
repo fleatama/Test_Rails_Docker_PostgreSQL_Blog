@@ -22,7 +22,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :tags %><br>
+    <%= form.label :tags %><br>
     <%= collection_check_boxes(:post, :tag_ids, Tag.all, :id, :label ) do |t|  %>
       <% t.label { t.check_box + t.text } %>
     <% end %>
