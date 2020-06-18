@@ -21,11 +21,11 @@
     <%= form.number_field :mode %>
   </div>
 
-  <div class="field">
-    <%= form.label :tags %><br>
-    <%= collection_check_boxes(:post, :tag_ids, Tag.all, :id, :label ) do |t|  %>
-      <% t.label { t.check_box + t.text } %>
-    <% end %>
+  <div class="checkbox">
+    <%= form.label :tag %><br>
+      <%= collection_check_boxes(:post, :tag_ids, Tag.all, :id, :name ) do |t|  %>
+        <% t.label { t.check_box + t.text } %>
+      <% end %>
   </div>
 
   <div class="field">
