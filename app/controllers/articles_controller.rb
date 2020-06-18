@@ -4,7 +4,7 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+    @articles = params[:category_id].present? ? Category.find(params[:category_id]).articles : Article.all
   end
 
   # GET /articles/1
@@ -16,7 +16,7 @@ class ArticlesController < ApplicationController
   # GET /articles/new
   def new
     @article = Article.new
-    # @article.article_categories.build
+    @article.article_categories.build
   end
 
   # GET /articles/1/edit
@@ -27,16 +27,28 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = Article.new(article_params)
-
-    respond_to do |format|
+    category_list = params[:category_list].split(",")
+      # if @article.save
+      #   format.html { redirect_to @article, notice: 'Article was successfully created.' }
+      #   format.json { render :show, status: :created, location: @article }
+      # else
+      #   format.html { render :new }
+      #   format.json { render json: @article.errors, status: :unprocessable_entity }
+      # end
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
-        format.json { render :show, status: :created, location: @article }
+        redirect_to @article
       else
-        format.html { render :new }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        render 'new'
       end
-    end
+    # respond_to do |format|
+    #   if @article.save
+    #     format.html { redirect_to @article, notice: 'Article was successfully created.' }
+    #     format.json { render :show, status: :created, location: @article }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @article.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /articles/1

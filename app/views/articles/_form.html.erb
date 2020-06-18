@@ -21,9 +21,11 @@
     <%= form.text_area :content %>
   </div>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.collection_check_boxes :category_ids, Category.all, :id, :name %>
+  <div class="article-tags-field">
+    <%= form.label "カテゴリー" %>
+    <ul id="article-tags">
+    </ul>
+    <%= hidden_field_tag :category_hidden,@category_list %>
   </div>
 
   <div class="actions">

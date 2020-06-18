@@ -19,6 +19,7 @@ gem 'devise'
 gem 'pry-rails'
 gem 'pry-doc'
 gem 'kaminari'
+gem "jquery-rails"
 gem 'jquery-ui-rails'
 
 # Use CoffeeScript for .coffee assets and views

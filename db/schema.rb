@@ -16,8 +16,12 @@ ActiveRecord::Schema.define(version: 2020_06_17_113105) do
   enable_extension "plpgsql"
 
   create_table "article_categories", force: :cascade do |t|
+    t.bigint "article_id"
+    t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_categories_on_article_id"
+    t.index ["category_id"], name: "index_article_categories_on_category_id"
   end
 
   create_table "articles", force: :cascade do |t|
@@ -31,7 +35,7 @@ ActiveRecord::Schema.define(version: 2020_06_17_113105) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.text "name"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
@@ -49,5 +53,7 @@ ActiveRecord::Schema.define(version: 2020_06_17_113105) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "article_categories", "articles"
+  add_foreign_key "article_categories", "categories"
   add_foreign_key "articles", "users"
 end
